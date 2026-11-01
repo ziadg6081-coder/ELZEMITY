@@ -1,0 +1,55 @@
+/* Elzemity hero: static brand image (replaces the old video).
+   Desktop/tablet-landscape: image is the full background, short text sits in the empty dark area (bottom right) so it never covers the bottle or the smoke wordmark.
+   Phones/portrait tablets: image shows uncropped on top, text sits below it on the same dark tone. */
+.page[data-page="home"] .hero{
+  position:relative !important;display:block !important;grid-template-columns:none !important;
+  width:100%;height:min(56.25vw,88svh);min-height:420px !important;overflow:hidden;background:#0c0a08 !important;isolation:isolate;
+}
+.page[data-page="home"] .hero::before{display:none !important}
+.page[data-page="home"] .hero-background{position:absolute !important;inset:0 !important;width:100% !important;height:100% !important;z-index:0 !important;pointer-events:none}
+.page[data-page="home"] .hero-img{
+  position:absolute;inset:0;width:100%;height:100%;max-width:none;object-fit:cover;object-position:center center;display:block;
+}
+.page[data-page="home"] .hero-copy,
+html[dir="rtl"] .page[data-page="home"] .hero-copy{
+  position:absolute !important;z-index:2 !important;left:38% !important;right:5% !important;bottom:clamp(24px,7vh,70px) !important;top:auto !important;
+  width:auto !important;min-height:0 !important;padding:0 !important;display:flex;flex-direction:column;align-items:center !important;justify-content:flex-end;
+  text-align:center;background:transparent !important;text-shadow:0 2px 18px rgba(0,0,0,.6);
+}
+.page[data-page="home"] .hero-copy h1,
+html[dir="rtl"] .page[data-page="home"] .hero-copy h1{
+  margin:0 0 clamp(14px,2vw,24px);max-width:none;color:#f3e6d3 !important;
+  font-size:clamp(24px,3vw,46px) !important;line-height:1.25 !important;letter-spacing:-.02em;
+}
+.page[data-page="home"] .hero-copy h1 em{color:#d8b48c !important;font-style:italic}
+html[dir="rtl"] .page[data-page="home"] .hero-copy h1{letter-spacing:0;line-height:1.4 !important}
+html[dir="rtl"] .page[data-page="home"] .hero-copy h1 em{font-style:normal}
+.page[data-page="home"] .hero-copy .button-dark{
+  background:#d8b48c !important;color:#14100b !important;border-color:#d8b48c;min-height:44px;text-shadow:none;
+}
+.page[data-page="home"] .hero-copy .button-dark:hover{background:#ecd0ab !important}
+
+/* Very wide, short screens: keep the full image, don't let the hero get too short */
+@media (min-aspect-ratio:21/9){
+  .page[data-page="home"] .hero{height:88svh}
+}
+
+/* Tablets (portrait) + phones: image uncropped on top, text underneath */
+@media (max-width:900px), (max-aspect-ratio:4/3){
+  .page[data-page="home"] .hero{height:auto !important;min-height:0 !important;display:flex !important;flex-direction:column}
+  .page[data-page="home"] .hero-background{position:relative !important;inset:auto !important;height:auto !important;aspect-ratio:16/9}
+  .page[data-page="home"] .hero-img{position:absolute;inset:0;object-fit:cover}
+  .page[data-page="home"] .hero-background::after{
+    content:"";position:absolute;left:0;right:0;bottom:0;height:22%;background:linear-gradient(180deg,transparent,#0c0a08);
+  }
+  .page[data-page="home"] .hero-copy,
+  html[dir="rtl"] .page[data-page="home"] .hero-copy{
+    position:relative !important;left:auto !important;right:auto !important;bottom:auto !important;
+    padding:6px 24px clamp(30px,8vw,48px) !important;width:100% !important;
+  }
+  .page[data-page="home"] .hero-copy h1,
+  html[dir="rtl"] .page[data-page="home"] .hero-copy h1{font-size:clamp(26px,7vw,40px) !important}
+}
+
+/* Home collection card "Unisex": local image (same method as Men / Women: image on the card's ::after) */
+.category-card.category-unisex::after{background-image:url("../img/cat-unisex.jpg") !important;background-size:cover !important;background-position:center !important}

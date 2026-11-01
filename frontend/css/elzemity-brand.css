@@ -1,0 +1,16 @@
+/* Elzemity branding + readable hero. Existing video and animation remain unchanged. */
+.site-header .brand-logo{width:68px;height:68px;max-width:68px;object-fit:contain;border-radius:4px}
+.footer-brand .brand-logo{width:92px;height:92px;object-fit:contain;border-radius:4px}
+body.admin .admin-bar .brand-logo{width:70px;height:70px;object-fit:contain;border-radius:4px}
+@media(max-width:650px){.site-header .brand-logo{width:49px;height:49px;max-width:49px}body.admin .admin-bar .brand-logo{width:52px;height:52px}}
+.page[data-page="home"] .hero::before{background:linear-gradient(90deg,rgba(8,7,6,.91) 0%,rgba(8,7,6,.78) 28%,rgba(8,7,6,.35) 60%,rgba(8,7,6,.08) 100%) !important}
+html[dir="rtl"] .page[data-page="home"] .hero::before{background:linear-gradient(270deg,rgba(8,7,6,.91) 0%,rgba(8,7,6,.78) 28%,rgba(8,7,6,.35) 60%,rgba(8,7,6,.08) 100%) !important}
+.page[data-page="home"] .hero-copy,html[dir="rtl"] .page[data-page="home"] .hero-copy{width:min(100%,720px) !important;padding-inline:clamp(24px,6vw,90px) !important;text-shadow:0 2px 16px rgba(0,0,0,.45)}
+.page[data-page="home"] .hero-copy h1{font-size:clamp(42px,5.2vw,76px);line-height:1.18;max-width:680px}
+html[dir="rtl"] .page[data-page="home"] .hero-copy h1{font-size:clamp(38px,4.5vw,65px);line-height:1.35}
+.page[data-page="home"] .hero-copy .hero-description{max-width:470px;line-height:1.85}
+.page[data-page="home"] .hero-copy .button{text-shadow:none}
+@media(max-width:650px){.page[data-page="home"] .hero::before,html[dir="rtl"] .page[data-page="home"] .hero::before{background:linear-gradient(180deg,rgba(8,7,6,.83),rgba(8,7,6,.64) 62%,rgba(8,7,6,.2)) !important}.page[data-page="home"] .hero-copy h1,html[dir="rtl"] .page[data-page="home"] .hero-copy h1{font-size:clamp(36px,9vw,48px)}}
+
+/* Transparent logos: no backing, border or shadow. */
+.site-header .brand-logo,.footer-brand .brand-logo,body.admin .admin-bar .brand-logo{background:transparent!important;border:0!important;border-radius:0!important;box-shadow:none!important}

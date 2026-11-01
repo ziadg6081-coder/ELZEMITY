@@ -1,0 +1,9 @@
+# /etc/systemd/system/oriantal-backup.service
+[Unit]
+Description=Oriantal Perfumes encrypted DB backup
+[Service]
+Type=oneshot
+User=oriantal
+WorkingDirectory=/opt/oriantal-perfumes/backend
+Environment=NODE_ENV=production
+ExecStart=/usr/bin/node scripts/backup.js

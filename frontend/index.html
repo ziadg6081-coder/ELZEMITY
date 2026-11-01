@@ -1,0 +1,506 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Discover your next signature scent at Elzemity. Explore refined fragrances for every mood.">
+  <title>Elzemity — Find Your Signature Scent</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Cairo:wght@400;500;600;700&family=DM+Sans:wght@400;500;600;700&family=Playfair+Display:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="css/styles.css">
+  <link rel="stylesheet" href="css/pages.css">
+  <link rel="stylesheet" href="css/hero-fullscreen-fix.css?v=2">
+  <link rel="stylesheet" href="css/refinements.css?v=1">
+
+  <link rel="icon" type="image/png" href="img/elzemity-brown.png">
+
+  <script src="js/i18n.js"></script>
+  <script defer src="js/strings-store.js"></script>
+  <script defer src="/socket.io/socket.io.js"></script>
+  <script defer src="js/app.js?v=2"></script>
+
+  <style>
+    /* Shopping cart icon */
+    .cart-trigger {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      min-width: 42px;
+      min-height: 42px;
+      gap: 0;
+      border: 0;
+      background: transparent;
+      color: var(--ink);
+      padding: 8px;
+      cursor: pointer;
+    }
+
+    .cart-icon {
+      display: block;
+      width: 22px;
+      height: 22px;
+      flex-shrink: 0;
+      transition: color 0.2s ease, transform 0.2s ease;
+    }
+
+    .cart-trigger:hover .cart-icon {
+      color: var(--gold);
+      transform: translateY(-2px);
+    }
+
+    /* The quantity sits on the bag itself, not beside it. */
+    .cart-trigger .cart-badge {
+      position: absolute;
+      top: 0;
+      right: 0;
+      display: grid;
+      place-items: center;
+      min-width: 17px;
+      height: 17px;
+      padding: 0 3px;
+      margin: 0;
+      border: 1.5px solid #fffdfa;
+      border-radius: 999px;
+      background: #a5814a;
+      color: #fff;
+      font: 700 10px/1 'DM Sans', sans-serif;
+      box-shadow: 0 1px 4px rgba(0,0,0,.12);
+      pointer-events: none;
+      transform: translate(5%, -5%);
+    }
+    .cart-trigger .cart-badge:empty { display: none; }
+
+    .cart-trigger:focus-visible {
+      outline: 2px solid var(--gold);
+      outline-offset: 3px;
+    }
+
+    @media (max-width: 650px) {
+      .cart-trigger {
+        gap: 0;
+        padding: 6px;
+      }
+
+      .cart-icon {
+        width: 21px;
+        height: 21px;
+      }
+
+      .cart-trigger .cart-badge {
+        min-width: 16px;
+        height: 16px;
+        font-size: 9px;
+      }
+    }
+  </style>
+  <link rel="stylesheet" href="css/elzemity-brand.css?v=2">
+  <link rel="stylesheet" href="css/luxury-upgrades.css?v=2">
+  <link rel="stylesheet" href="css/hero-image.css?v=4">
+</head>
+
+<body>
+  <div class="conn-banner" id="connBanner" role="status" aria-live="polite" hidden></div>
+
+  <div class="announcement">
+    <span data-i18n="announcement">A LITTLE LUXURY, DELIVERED TO YOUR DOOR</span>
+    <span>✦</span>
+  </div>
+
+  <header class="site-header">
+    <button
+      class="icon-button mobile-menu-button"
+      id="menuToggle"
+      aria-label="Open navigation"
+      data-i18n-attr="aria-label:nav.open"
+      aria-expanded="false"
+      aria-controls="mainNav"
+    >☰</button>
+
+    <a
+      class="brand"
+      href="#/"
+      aria-label="Elzemity"
+      data-i18n-attr="aria-label:nav.homeAria"
+    ><img class="brand-logo" src="img/elzemity-brown.png" alt="Elzemity" width="64" height="72" decoding="async"></a>
+
+    <nav
+      class="desktop-nav"
+      id="mainNav"
+      aria-label="Main navigation"
+      data-i18n-attr="aria-label:nav.main"
+    >
+      <a href="#/" data-route="home" data-i18n="nav.home">Home</a>
+      <a href="#/shop" data-route="shop" data-i18n="nav.shop">Shop All</a>
+      <a href="#/men" data-route="men" data-i18n="cat.Men">Men</a>
+      <a href="#/women" data-route="women" data-i18n="cat.Women">Women</a>
+      <a href="#/unisex" data-route="unisex" data-i18n="cat.Unisex">Unisex</a>
+      <a href="#/contact" data-route="contact" data-i18n="nav.contact">Contact</a>
+      <button class="mobile-only-link" id="accountToggleMobile" type="button" data-i18n="nav.account">Account</button>
+    </nav>
+
+    <div class="header-actions">
+      <button class="lang-toggle" id="langToggle" type="button" lang="ar" aria-label="العربية">العربية</button>
+
+      <button
+        class="icon-button"
+        id="searchToggle"
+        aria-label="Search products"
+        data-i18n-attr="aria-label:nav.search"
+      >⌕</button>
+
+      <button class="header-link account-link account-icon-button" id="accountToggle" type="button" aria-label="My account" title="My account"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="7.5" r="3.5"/><path d="M4.5 20c0-4.1 3.1-6.5 7.5-6.5s7.5 2.4 7.5 6.5"/></svg></button>
+
+      <!-- Updated shopping cart icon -->
+      <button
+        class="icon-button cart-trigger"
+        id="cartToggle"
+        type="button"
+        aria-label="Open shopping cart"
+        data-i18n-attr="aria-label:nav.cart"
+      >
+        <svg
+          class="cart-icon"
+          xmlns="http://www.w3.org/2000/svg"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="1.7"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          aria-hidden="true"
+        >
+          <path d="M4 8h16l-1.3 13H5.3L4 8Z"></path>
+          <path d="M9 9V6a3 3 0 0 1 6 0v3"></path>
+        </svg>
+        <span id="cartCount" class="cart-badge" aria-label="Items in cart">0</span>
+      </button>
+    </div>
+  </header>
+
+  <div class="search-panel" id="searchPanel" hidden>
+    <label for="searchInput" data-i18n="search.title">Find your fragrance</label>
+    <div class="search-row">
+      <input id="searchInput" type="search" placeholder="Search by perfume or scent family…" data-i18n-attr="placeholder:search.placeholder" role="combobox" aria-autocomplete="list" aria-expanded="false" aria-controls="searchSuggestions" autocomplete="off">
+      <button id="clearSearch" class="text-button" type="button" data-i18n="search.clear">Clear</button>
+    </div>
+    <div id="searchSuggestions" class="search-suggestions" role="listbox" aria-label="Product suggestions" hidden></div>
+  </div>
+
+  <main id="main" tabindex="-1">
+
+    <!-- HOME -->
+    <div class="page" data-page="home">
+      <section class="hero">
+        <div class="hero-background" aria-hidden="true">
+          <img class="hero-img" src="img/hero.jpg" srcset="img/hero-800.jpg 800w, img/hero.jpg 1280w" sizes="100vw" alt="" width="1280" height="720" fetchpriority="high" decoding="async">
+        </div>
+        <div class="hero-copy">
+          <h1 data-i18n-html="home.title">A scent that<br><em>stays with you.</em></h1>
+          <a class="button button-dark" href="#/shop" data-i18n-html="home.cta">Explore the collection <span>↗</span></a>
+        </div>
+      </section>
+
+      <section class="trust-strip" aria-label="Store highlights" data-i18n-attr="aria-label:trust.label">
+        <div><span class="trust-icon">✳</span><span data-i18n="trust.1">Thoughtfully curated scents</span></div>
+        <div><span class="trust-icon">◇</span><span data-i18n="trust.2">Clear, honest pricing</span></div>
+        <div><span class="trust-icon">↗</span><span data-i18n="trust.3">Personal customer care</span></div>
+      </section>
+
+      <section class="section category-section" id="collections">
+        <div class="section-heading">
+          <div>
+            <p class="eyebrow" data-i18n="home.cat.eyebrow">FIND YOUR MOOD</p>
+            <h2 data-i18n-html="home.cat.title">Explore by <em>character.</em></h2>
+          </div>
+          <p class="section-intro" data-i18n="home.cat.intro">Every scent tells a different story. Find the one that feels like yours.</p>
+        </div>
+
+        <div class="category-grid">
+          <a class="category-card category-men" href="#/men">
+            <span class="category-number" data-i18n="home.cat.n1">01 / COLLECTION</span>
+            <span class="category-title" data-i18n="cat.Men">Men</span>
+            <span class="category-link" data-i18n-html="home.cat.link">Explore fragrances ↗</span>
+          </a>
+          <a class="category-card category-women" href="#/women">
+            <span class="category-number" data-i18n="home.cat.n2">02 / COLLECTION</span>
+            <span class="category-title" data-i18n="cat.Women">Women</span>
+            <span class="category-link" data-i18n-html="home.cat.link">Explore fragrances ↗</span>
+          </a>
+          <a class="category-card category-unisex" href="#/unisex">
+            <span class="category-number" data-i18n="home.cat.n3">03 / COLLECTION</span>
+            <span class="category-title" data-i18n="cat.Unisex">Unisex</span>
+            <span class="category-link" data-i18n-html="home.cat.link">Explore fragrances ↗</span>
+          </a>
+        </div>
+      </section>
+
+      <section class="section featured-section">
+        <div class="section-heading">
+          <div>
+            <p class="eyebrow" data-i18n="home.feat.eyebrow">NEW &amp; FEATURED</p>
+            <h2 data-i18n-html="home.feat.title">Our <em>favourites.</em></h2>
+          </div>
+          <a href="#/shop" class="underlined-link" data-i18n-html="home.feat.link">View all fragrances ↗</a>
+        </div>
+        <div class="product-grid" id="featuredGrid" aria-live="polite"></div>
+      </section>
+    </div>
+
+    <!-- SHOP / MEN / WOMEN / UNISEX -->
+    <div class="page" data-page="shop" hidden>
+      <section class="section shop-section">
+        <div class="section-heading shop-heading">
+          <div>
+            <p class="eyebrow" id="shopEyebrow"></p>
+            <h1 id="shopTitle"></h1>
+          </div>
+        </div>
+
+        <div class="shop-toolbar">
+          <p id="resultCount" aria-live="polite">Loading fragrances…</p>
+          <div class="toolbar-controls">
+            <label class="sr-only" for="sortFilter" data-i18n="shop.sortLabel">Sort products</label>
+            <select id="sortFilter">
+              <option value="featured" data-i18n="shop.sort.featured">Featured</option>
+              <option value="low" data-i18n="shop.sort.low">Price: low to high</option>
+              <option value="high" data-i18n="shop.sort.high">Price: high to low</option>
+              <option value="name" data-i18n="shop.sort.name">Name: A–Z</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="product-grid" id="productGrid" aria-live="polite" aria-busy="true"></div>
+
+        <div class="load-error" id="loadError" hidden>
+          <h3 data-i18n="shop.loadError.title">We couldn’t load the collection</h3>
+          <p data-i18n="shop.loadError.text">Please check your connection and try again.</p>
+          <button class="button button-outline" id="retryLoad" type="button" data-i18n="shop.retry">Try again</button>
+        </div>
+
+        <div class="empty-state" id="emptyState" hidden>
+          <span>⌕</span>
+          <h3 id="emptyTitle"></h3>
+          <p id="emptyText"></p>
+          <button class="button button-outline" id="resetFilters" type="button" data-i18n="shop.showAll">Show all fragrances</button>
+        </div>
+      </section>
+    </div>
+
+    <!-- CONTACT -->
+    <div class="page" data-page="contact" hidden>
+      <section class="section contact-section">
+        <div class="section-heading"><div><p class="eyebrow">CONTACT</p><h1 data-i18n="nav.contact">Contact</h1><p class="section-intro" data-i18n="contact.intro">Questions about a fragrance or your order? Get in touch.</p></div></div>
+        <div id="contactContent" class="contact-content" aria-live="polite"></div>
+      </section>
+    </div>
+
+    <!-- CUSTOMER CARE -->
+    <div class="page" data-page="care" hidden>
+      <section class="section care-section">
+        <div class="section-heading">
+          <div>
+            <p class="eyebrow" data-i18n="care.eyebrow">CUSTOMER CARE</p>
+            <h1 data-i18n-html="care.title">Shipping &amp; <em>payment.</em></h1>
+          </div>
+          <p class="section-intro" data-i18n="care.intro">How ordering works, step by step.</p>
+        </div>
+
+        <ol class="care-steps">
+          <li><h3 data-i18n="care.s1.t">Choose your scents</h3><p data-i18n="care.s1.p">Add your favourite fragrances to the cart and continue to checkout.</p></li>
+          <li><h3 data-i18n="care.s2.t">Enter your delivery details</h3><p data-i18n="care.s2.p">Tell us where to deliver. The shipping fee is calculated according to your governorate.</p></li>
+          <li><h3 data-i18n="care.s3.t">Pay the shipping fee via InstaPay</h3><p data-i18n="care.s3.p">After placing the order you’ll see the InstaPay details. Send the shipping fee, then upload the receipt or enter the reference number.</p></li>
+          <li><h3 data-i18n="care.s4.t">We confirm your transfer</h3><p data-i18n="care.s4.p">The store owner confirms the transfer manually before your order is processed. Unpaid orders are cancelled automatically once the payment window ends.</p></li>
+          <li><h3 data-i18n="care.s5.t">Pay for the perfumes on delivery</h3><p data-i18n="care.s5.p">The price of the perfumes is paid in cash when you receive your order (COD).</p></li>
+        </ol>
+
+        <section class="care-faq" aria-labelledby="careFaqTitle">
+          <h2 id="careFaqTitle" data-i18n="faq.title">Frequently asked questions</h2>
+          <details><summary data-i18n="faq.paymentQ">How do I pay?</summary><p id="faqPaymentAnswer" data-i18n="co.policyText"></p></details>
+          <details><summary data-i18n="faq.shippingQ">How is shipping calculated?</summary><p data-i18n="faq.shippingA"></p></details>
+          <details><summary data-i18n="faq.receiptQ">Is my transfer confirmed when I upload a receipt?</summary><p data-i18n="faq.receiptA"></p></details>
+        </section>
+
+        <div class="care-actions">
+          <a class="button button-dark" href="#/shop" data-i18n-html="care.shop">Start shopping <span>↗</span></a>
+          <button class="button button-outline" type="button" data-open-track data-i18n="care.track">Track my order</button>
+        </div>
+      </section>
+    </div>
+
+    <!-- NEWSLETTER -->
+    <section class="newsletter-section" id="newsletter">
+      <p class="eyebrow" data-i18n="news.eyebrow">A NOTE FROM ELZEMITY</p>
+      <h2 data-i18n-html="news.title">Good things <em>linger.</em></h2>
+      <p data-i18n="news.text">Get updates on new arrivals and thoughtfully selected scents.</p>
+      <form id="newsletterForm" class="newsletter-form">
+        <label class="sr-only" for="newsletterEmail" data-i18n="news.label">Email address</label>
+        <input id="newsletterEmail" type="email" placeholder="Your email address" data-i18n-attr="placeholder:news.placeholder" required autocomplete="email">
+        <button type="submit" aria-label="Subscribe" data-i18n-attr="aria-label:news.subscribe" data-i18n-html="news.join">Join ↗</button>
+      </form>
+      <p class="form-message" id="newsletterMessage" aria-live="polite"></p>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="footer-top">
+      <div>
+        <a class="brand footer-brand" href="#/" aria-label="Elzemity"><img class="brand-logo" src="img/elzemity-brown.png" alt="Elzemity" width="84" height="94" loading="lazy" decoding="async"></a>
+        <p data-i18n="footer.tagline">Find the fragrance that feels like you.</p>
+      </div>
+
+      <div class="footer-column">
+        <h3 data-i18n="footer.explore">Explore</h3>
+        <a href="#/shop" data-i18n="footer.all">All fragrances</a>
+        <a href="#/men" data-i18n="cat.Men">Men</a>
+        <a href="#/women" data-i18n="cat.Women">Women</a>
+        <a href="#/unisex" data-i18n="cat.Unisex">Unisex</a>
+      </div>
+
+      <div class="footer-column">
+        <h3 data-i18n="footer.care">Customer care</h3>
+        <a href="#/care" data-i18n="footer.shipping">Shipping &amp; payment</a>
+        <button class="footer-link" type="button" data-open-track data-i18n="footer.track">Track your order</button>
+      </div>
+
+      <div class="footer-column">
+        <h3 data-i18n="footer.company">Company</h3>
+        <a href="#/contact" data-i18n="nav.contact">Contact</a>
+        <a href="#/" data-i18n="nav.home">Home</a>
+      </div>
+    </div>
+
+    <div class="footer-bottom">
+      <span id="copyright"></span>
+      <span data-i18n="footer.made">MADE FOR YOUR SENSES</span>
+    </div>
+  </footer>
+
+  <div class="overlay" id="overlay" hidden></div>
+
+  <aside
+    class="cart-drawer"
+    id="cartDrawer"
+    aria-label="Shopping cart"
+    data-i18n-attr="aria-label:cart.aria"
+    aria-modal="true"
+    role="dialog"
+    hidden
+  >
+    <div class="drawer-header">
+      <div>
+        <p class="eyebrow" data-i18n="cart.eyebrow">YOUR SELECTION</p>
+        <h2><span data-i18n="cart.title">Shopping cart</span> <span id="drawerCount">(0)</span></h2>
+      </div>
+      <button class="icon-button" id="closeCart" type="button" aria-label="Close shopping cart" data-i18n-attr="aria-label:cart.close">✕</button>
+    </div>
+
+    <div class="cart-items" id="cartItems"></div>
+
+    <div class="cart-empty" id="cartEmpty">
+      <span>◇</span>
+      <h3 data-i18n="cart.empty.title">Your cart is waiting</h3>
+      <p data-i18n="cart.empty.text">Find a scent worth keeping.</p>
+      <button class="button button-dark" id="continueShopping" type="button" data-i18n="cart.empty.btn">Explore fragrances</button>
+    </div>
+
+    <div class="cart-footer" id="cartFooter" hidden>
+      <div class="subtotal-row">
+        <span data-i18n="cart.subtotal">Subtotal</span>
+        <strong id="cartSubtotal">EGP 0</strong>
+      </div>
+      <p data-i18n="cart.note">Shipping fees are calculated according to your delivery area. Choose shipping-only or full advance payment at checkout via InstaPay.</p>
+      <button class="button button-dark checkout-button" id="checkoutButton" type="button" data-i18n-html="cart.checkout">Continue to checkout ↗</button>
+      <small data-i18n="cart.secure">Secure order details · Transparent pricing</small>
+    </div>
+  </aside>
+
+  <dialog class="product-dialog" id="productDialog" aria-labelledby="dialogTitle">
+    <button class="icon-button dialog-close" id="closeProduct" type="button" aria-label="Close product details" data-i18n-attr="aria-label:dialog.closeProduct">✕</button>
+    <div id="productDialogContent"></div>
+  </dialog>
+
+  <dialog class="checkout-dialog" id="checkoutDialog" aria-labelledby="checkoutTitle">
+    <button class="icon-button dialog-close" id="closeCheckout" type="button" aria-label="Close checkout" data-i18n-attr="aria-label:dialog.closeCheckout">✕</button>
+    <div class="checkout-content">
+      <p class="eyebrow" data-i18n="co.eyebrow">ALMOST YOURS</p>
+      <h2 id="checkoutTitle" data-i18n-html="co.title">Delivery <em>details.</em></h2>
+      <p class="checkout-intro" data-i18n="co.intro">Enter your delivery details. After placing the order you’ll get the shipping-fee InstaPay instructions.</p>
+
+      <form id="checkoutForm" novalidate>
+        <div class="form-grid">
+          <div class="form-field">
+            <label for="customerName" data-i18n="co.name">Full name *</label>
+            <input id="customerName" name="name" autocomplete="name" required minlength="2" maxlength="120">
+          </div>
+
+          <div class="form-field">
+            <label for="customerPhone" data-i18n="co.phone">Phone number *</label>
+            <input id="customerPhone" name="phone" type="tel" inputmode="tel" autocomplete="tel" required minlength="8" maxlength="20" dir="ltr">
+          </div>
+
+          <div class="form-field full-field">
+            <label for="customerEmail" data-i18n="co.email">Email (optional)</label>
+            <input id="customerEmail" name="email" type="email" autocomplete="email" maxlength="190" dir="ltr">
+          </div>
+
+          <div class="form-field">
+            <label for="governorate" data-i18n="co.gov">Governorate *</label>
+            <select id="governorate" name="governorate" required>
+              <option value="" data-i18n="co.govPlaceholder">Select governorate…</option>
+            </select>
+          </div>
+
+          <div class="form-field">
+            <label for="city" data-i18n="co.city">City / Area *</label>
+            <input id="city" name="city" required maxlength="100">
+          </div>
+
+          <div class="form-field full-field">
+            <label for="address" data-i18n="co.address">Detailed address *</label>
+            <textarea id="address" name="address" rows="3" required minlength="5" maxlength="500"></textarea>
+          </div>
+
+          <div class="form-field full-field">
+            <label for="couponCode" data-i18n="co.coupon">Coupon code (optional)</label>
+            <div class="inline-field">
+              <input id="couponCode" name="couponCode" maxlength="40" autocomplete="off" dir="ltr">
+              <button type="button" class="button button-outline" id="applyCoupon" data-i18n="co.apply">Apply</button>
+              <button type="button" class="text-button" id="removeCoupon" data-i18n="co.removeCoupon" hidden>Remove coupon</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="form-field full-field" hidden><label for="customerNote" data-i18n="co.note">Delivery notes (optional)</label><textarea id="customerNote" name="note" rows="2" maxlength="1000"></textarea></div>
+
+        <fieldset class="payment-choice"><legend id="paymentChoiceLabel">Payment method / طريقة الدفع</legend><label><input type="radio" name="paymentMode" value="shipping_only" checked> <span>دفع الشحن فقط مقدمًا / Shipping now, products on delivery</span></label><label><input type="radio" name="paymentMode" value="full" > <span>دفع الشحن والأوردر كامل مقدمًا / Pay full order now</span></label></fieldset>
+        <div class="payment-note">
+          <strong data-i18n="co.policyTitle">Payment policy</strong>
+          <p data-i18n="co.policyText">Choose whether to pay shipping only or the full order in advance via InstaPay. The store reviews your transfer before processing.</p>
+        </div>
+
+        <div class="summary" id="checkoutSummary" aria-live="polite"></div>
+        <button class="button button-dark checkout-button" id="placeOrder" type="submit" data-i18n-html="co.place">Place order ↗</button>
+        <p id="checkoutMessage" class="form-message" role="alert"></p>
+      </form>
+    </div>
+  </dialog>
+
+  <dialog class="checkout-dialog" id="orderDialog" aria-labelledby="orderTitle">
+    <button class="icon-button dialog-close" id="closeOrder" type="button" aria-label="Close order details" data-i18n-attr="aria-label:dialog.closeOrder">✕</button>
+    <div class="checkout-content" id="orderContent"></div>
+  </dialog>
+
+  <dialog class="checkout-dialog" id="accountDialog" aria-labelledby="accountTitle">
+    <button class="icon-button dialog-close" id="closeAccount" type="button" aria-label="Close account" data-i18n-attr="aria-label:dialog.closeAccount">✕</button>
+    <div class="checkout-content" id="accountContent"></div>
+  </dialog>
+
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+<a id="floatingWhatsapp" class="floating-whatsapp" href="#/contact" target="_blank" rel="noopener noreferrer" aria-label="Chat on WhatsApp" title="WhatsApp" hidden><img src="img/social/whatsapp.svg" alt="" aria-hidden="true"></a>
+</body>
+</html>

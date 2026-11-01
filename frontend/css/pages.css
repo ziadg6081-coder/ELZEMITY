@@ -1,0 +1,130 @@
+/* ===== Multi-page navigation, language toggle and RTL (Arabic) support =====
+   Loaded after styles.css. Everything direction-sensitive uses logical properties or an html[dir="rtl"] override. */
+
+/* --- hide the page until the Arabic text is applied (prevents a flash of English) --- */
+html.i18n-pending body{visibility:hidden}
+
+/* --- pages --- */
+main#main{outline:none}
+.page[hidden]{display:none}
+.page.enter{animation:pageIn .45s var(--ease) both}
+@keyframes pageIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
+.section-heading h1,.story-copy h1{font-family:var(--serif);font-weight:400;letter-spacing:-.04em;line-height:1.09;margin:0}
+.section-heading h1{font-size:clamp(34px,4vw,52px)}
+.story-copy h1{font-size:clamp(34px,4vw,52px);margin-bottom:22px}
+.section-heading h1 em,.story-copy h1 em{font-weight:400;color:#9e8150}
+.featured-section{padding-top:30px}
+.shop-section{padding-top:50px}
+.page[data-page="care"] .section-heading{margin-bottom:30px}
+
+/* category cards are links now */
+a.category-card{text-decoration:none;display:flex}
+.nav-active,.desktop-nav a[aria-current="page"]{color:#9b7c45;box-shadow:0 1px 0 var(--gold)}
+
+/* --- header extras --- */
+.lang-toggle{border:1px solid var(--line);background:transparent;color:var(--ink);padding:5px 12px;font:600 11px var(--sans);letter-spacing:.03em;border-radius:20px;transition:border-color .2s,color .2s;white-space:nowrap}
+.lang-toggle:hover{border-color:var(--gold);color:#9b7c45}
+.mobile-only-link{display:none}
+button.footer-link{border:0;background:transparent;padding:0;font-size:10px;color:#c8c4ba;text-align:start;transition:color .2s}
+button.footer-link:hover{color:#fff}
+.cart-trigger span.cart-word{display:inline;width:auto;height:auto;border-radius:0;background:transparent;color:inherit;margin:0;font-size:inherit;place-items:unset}
+.cart-trigger span.cart-badge{margin-left:0;margin-inline-start:6px}
+
+/* --- customer care page --- */
+.care-steps{list-style:none;counter-reset:s;margin:0 0 34px;padding:0;display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:16px}
+.care-steps li{counter-increment:s;border:1px solid var(--line);padding:24px 22px;background:var(--paper)}
+.care-steps li::before{content:counter(s);display:grid;place-items:center;width:30px;height:30px;border-radius:50%;background:var(--ink);color:#fff;font:600 12px var(--sans);margin-bottom:14px}
+.care-steps h3{font:20px var(--serif);margin:0 0 8px}
+.care-steps p{font-size:12px;color:var(--muted);margin:0}
+.care-actions{display:flex;gap:12px;flex-wrap:wrap}
+.empty-state p{margin-bottom:18px}
+
+@media(max-width:650px){
+  .lang-toggle{padding:4px 9px;font-size:10px}
+  .mobile-only-link{display:block;border:0;background:transparent;text-align:start;font-size:13px;padding:14px 0;color:var(--ink)}
+  .desktop-nav.mobile-open{display:flex;position:absolute;top:100%;inset-inline:0;flex-direction:column;align-items:stretch;gap:0;background:var(--white);border-bottom:1px solid var(--line);box-shadow:0 18px 30px rgba(0,0,0,.06);padding:4px 20px 10px}
+  .desktop-nav.mobile-open a,.desktop-nav.mobile-open .mobile-only-link{font-size:13px;padding:14px 0;border-bottom:1px solid #eee9de}
+  .desktop-nav.mobile-open>*:last-child{border-bottom:0}
+  .desktop-nav a[aria-current="page"]{box-shadow:none;font-weight:700}
+  .shop-section{padding-top:30px}
+}
+
+/* =================== RTL / Arabic =================== */
+html[dir="rtl"]{--serif:"Amiri","Playfair Display",Georgia,serif;--sans:"Cairo","DM Sans",Arial,sans-serif}
+/* letter-spacing breaks Arabic letter joining, and uppercase does not exist in Arabic */
+html[dir="rtl"] *,html[dir="rtl"] *::before,html[dir="rtl"] *::after{letter-spacing:0!important;text-transform:none!important}
+html[dir="rtl"] body{font-size:15px;line-height:1.75}
+html[dir="rtl"] .hero h1,html[dir="rtl"] .section-heading h1,html[dir="rtl"] .section-heading h2,html[dir="rtl"] .story-copy h1,html[dir="rtl"] .story-copy h2,html[dir="rtl"] .newsletter-section h2,html[dir="rtl"] .checkout-content h2{line-height:1.3;font-weight:700}
+html[dir="rtl"] em{font-style:normal}
+/* the tiny Latin-style sizes are unreadable in Arabic */
+html[dir="rtl"] .announcement,html[dir="rtl"] .eyebrow,html[dir="rtl"] .category-number,html[dir="rtl"] .product-tag,html[dir="rtl"] .hero-stamp small,html[dir="rtl"] .hero-vertical,html[dir="rtl"] .footer-bottom,html[dir="rtl"] .stock-note,html[dir="rtl"] .badge,html[dir="rtl"] .track-code{font-size:12px}
+html[dir="rtl"] .desktop-nav a,html[dir="rtl"] .header-link,html[dir="rtl"] button.header-link,html[dir="rtl"] .cart-trigger,html[dir="rtl"] .category-link,html[dir="rtl"] .underlined-link,html[dir="rtl"] .product-meta,html[dir="rtl"] .product-brand,html[dir="rtl"] .footer-column a,html[dir="rtl"] button.footer-link,html[dir="rtl"] .footer-top>div:first-child p,html[dir="rtl"] .trust-strip>div,html[dir="rtl"] .shop-toolbar p,html[dir="rtl"] .toolbar-controls select,html[dir="rtl"] .quick-add,html[dir="rtl"] .product-price,html[dir="rtl"] .old-price{font-size:13px}
+html[dir="rtl"] .button{font-size:13px;gap:14px}
+html[dir="rtl"] .hero-description,html[dir="rtl"] .hero-note,html[dir="rtl"] .section-intro,html[dir="rtl"] .story-copy>p:not(.eyebrow),html[dir="rtl"] .newsletter-section>p:not(.eyebrow):not(.form-message),html[dir="rtl"] .newsletter-form input,html[dir="rtl"] .newsletter-form button,html[dir="rtl"] .form-message,html[dir="rtl"] .cart-line p,html[dir="rtl"] .care-steps p,html[dir="rtl"] .checkout-intro,html[dir="rtl"] .payment-note p,html[dir="rtl"] .summary,html[dir="rtl"] .order-items,html[dir="rtl"] .pay-box,html[dir="rtl"] .toast{font-size:14px}
+html[dir="rtl"] .form-field label,html[dir="rtl"] .form-field input,html[dir="rtl"] .form-field select,html[dir="rtl"] .form-field textarea,html[dir="rtl"] .inline-field input{font-size:14px}
+html[dir="rtl"] .hero-description{max-width:420px}
+html[dir="rtl"] .brand{letter-spacing:.17em!important;text-transform:uppercase!important;font-family:"Playfair Display",Georgia,serif} /* the logo stays Latin */
+html[dir="rtl"] .lang-toggle{font-size:13px}
+
+/* positions that were hard-coded to left/right */
+html[dir="rtl"] .hero-copy{padding:clamp(52px,8vw,118px) max(7vw,calc((100vw - var(--container))/2)) 70px 7vw}
+html[dir="rtl"] .hero-stamp{right:auto;left:8%}
+html[dir="rtl"] .hero-vertical{right:auto;left:20px}
+html[dir="rtl"] .category-card{text-align:start}
+html[dir="rtl"] .product-tag{left:auto;right:12px}
+html[dir="rtl"] .wishlist-button{right:auto;left:8px}
+html[dir="rtl"] .stock-note,html[dir="rtl"] .order-mini{text-align:start}
+html[dir="rtl"] .announcement span:last-child{padding-left:0;padding-right:10px}
+html[dir="rtl"] .brand span{margin-left:0;margin-right:3px}
+html[dir="rtl"] .cart-trigger span.cart-badge{margin-inline-start:5px}
+html[dir="rtl"] .cart-drawer{right:auto;left:0;transform:translateX(-100%);box-shadow:15px 0 50px rgba(0,0,0,.08)}
+html[dir="rtl"] .cart-drawer.open{transform:translateX(0)}
+html[dir="rtl"] .dialog-close{float:left;margin:10px 0 -45px 10px}
+html[dir="rtl"] .hero-image{background-image:linear-gradient(270deg,rgba(20,19,16,.05),transparent 35%),url("https://images.unsplash.com/photo-1594035910387-fea47794261f?auto=format&fit=crop&w=1400&q=85")}
+html[dir="rtl"] .quantity-control button{font-family:var(--sans)}
+html[dir="rtl"] .newsletter-form input{text-align:start}
+html[dir="rtl"] .subtotal-row,html[dir="rtl"] .summary .row{direction:rtl}
+@media(max-width:650px){
+  html[dir="rtl"] .hero-copy{padding:58px 25px 42px}
+  html[dir="rtl"] .hero-stamp{left:7%;right:auto}
+  html[dir="rtl"] .product-tag{right:7px;left:auto}
+  html[dir="rtl"] .wishlist-button{left:6px;right:auto}
+  html[dir="rtl"] .hero h1{font-size:46px}
+}
+/* mixed content that must stay left-to-right inside RTL pages */
+.ltr,input[type="email"],input[type="tel"],input[name="couponCode"],code{direction:ltr;unicode-bidi:plaintext}
+html[dir="rtl"] input[type="email"]::placeholder,html[dir="rtl"] input[type="tel"]::placeholder{direction:rtl;text-align:start}
+html[dir="rtl"] code{direction:ltr;unicode-bidi:isolate}
+.cart-drawer:not(.open){box-shadow:none}
+@media(max-width:650px){
+  .site-header{grid-template-columns:34px minmax(0,1fr) auto;gap:6px}
+  .site-header .brand{font-size:15px;letter-spacing:.08em;text-align:center;overflow:hidden;text-overflow:ellipsis}
+  .header-actions{gap:2px}.icon-button{padding:6px}
+}
+
+/* Contact and product-size variant controls */
+.contact-section{min-height:48vh}.contact-content{display:flex;flex-direction:column;align-items:flex-start;gap:24px;margin-top:28px}.social-contact-grid{display:flex;flex-wrap:wrap;gap:12px}.social-contact-link{display:inline-flex;align-items:center;gap:10px;padding:13px 17px;border:1px solid var(--line,#ded8cc);border-radius:999px;color:inherit;text-decoration:none;transition:transform .2s,border-color .2s,background .2s}.social-contact-link:hover,.social-contact-link:focus-visible{transform:translateY(-2px);border-color:var(--bronze,#b18a4a);background:rgba(177,138,74,.08)}.social-icon{display:inline-grid;place-items:center;width:25px;height:25px;border-radius:50%;font-weight:700;background:#211f1b;color:#f7f2e8}.contact-whatsapp{display:inline-flex;align-items:center;gap:10px}.dialog-product-copy select{display:block;width:100%;margin:8px 0 16px;padding:12px;border:1px solid var(--line,#ded8cc);background:var(--paper,#fff);color:inherit;font:inherit}.variant-label{display:block;font-size:12px;font-weight:600;margin-top:18px}
+
+/* ---- Contact: original social-media brand icons (SVG files in img/social/) ---- */
+.social-icon{width:32px;height:32px;flex:0 0 32px;background-repeat:no-repeat;background-position:center;background-size:56%;box-shadow:0 2px 6px rgba(0,0,0,.14)}
+.social-facebook{background-color:#1877F2;background-image:url("../img/social/facebook.svg")}
+.social-instagram{background-size:56%,100%;background-color:#E4405F;background-image:url("../img/social/instagram.svg"),radial-gradient(circle at 30% 107%,#fdf497 0%,#fdf497 5%,#fd5949 45%,#d6249f 60%,#285AEB 90%)}
+.social-tiktok{background-color:#000;background-image:url("../img/social/tiktok.svg")}
+.social-youtube{background-color:#FF0000;background-image:url("../img/social/youtube.svg");background-size:60%}
+.social-telegram{background-color:#26A5E4;background-image:url("../img/social/telegram.svg")}
+.social-snapchat{background-color:#FFFC00;background-image:url("../img/social/snapchat.svg");box-shadow:0 0 0 1px rgba(0,0,0,.12),0 2px 6px rgba(0,0,0,.14)}
+.social-x{background-color:#000;background-image:url("../img/social/x.svg");background-size:50%}
+.social-whatsapp{background-color:#25D366;background-image:url("../img/social/whatsapp.svg");background-size:60%}
+.social-pinterest{background-color:#E60023;background-image:url("../img/social/pinterest.svg")}
+.social-threads{background-color:#000;background-image:url("../img/social/threads.svg");background-size:54%}
+.contact-whatsapp .social-icon{width:26px;height:26px;flex-basis:26px;box-shadow:none}
+.social-contact-link:hover .social-icon{transform:scale(1.08)}
+.social-icon{transition:transform .2s}
+.social-linkedin{background-color:#0A66C2;background-image:url("../img/social/linkedin.svg");background-size:50%}
+
+/* 2026-10-31: balanced header controls; accessible click target for search. */
+.header-actions .lang-toggle{font-size:10px;padding:4px 8px;letter-spacing:0;min-height:30px}
+.header-actions #searchToggle{display:inline-grid;place-items:center;min-width:44px;min-height:44px;font-size:27px;line-height:1;padding:6px;cursor:pointer}
+body.admin .admin-bar .lang-toggle{padding:5px 10px;font-size:10px}
+html[dir="rtl"] body.admin .admin-bar .lang-toggle{font-size:11px}
+@media(max-width:650px){.header-actions .lang-toggle{padding:3px 6px;font-size:9px;min-height:29px}.header-actions #searchToggle{min-width:40px;min-height:40px;font-size:25px;padding:5px}}

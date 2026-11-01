@@ -1,0 +1,11 @@
+ELZEMITY — brand update
+
+1. Storefront: brown-background logo. Admin: white-background logo.
+2. Hero: original video preserved, with a stronger directional dark gradient for readable overlay text.
+3. Public-facing brand text and email reset copy renamed Elzemity.
+4. Existing DB_NAME, migration files, API identifiers, localStorage keys and old paths are intentionally preserved to avoid breaking the working store.
+5. For the existing store name and previously seeded products, run ELZEMITY_BRAND_UPDATE.sql once after backing up the database. No schema migration is needed.
+6. Keep .env private; do not publish ZIP or .env to a public repository.
+7. Back up the DB before deploying, and do not rerun setup or migrations.
+
+Updated: original user-supplied transparent PNGs (brown storefront, beige admin); no image backgrounds.

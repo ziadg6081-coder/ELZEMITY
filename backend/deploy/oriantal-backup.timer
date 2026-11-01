@@ -1,0 +1,8 @@
+# /etc/systemd/system/oriantal-backup.timer   ->   sudo systemctl enable --now oriantal-backup.timer
+[Unit]
+Description=Daily backup (change OnCalendar for more frequent backups)
+[Timer]
+OnCalendar=*-*-* 03:30:00
+Persistent=true
+[Install]
+WantedBy=timers.target

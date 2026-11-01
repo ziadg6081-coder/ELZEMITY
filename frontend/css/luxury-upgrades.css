@@ -1,0 +1,55 @@
+/* ELZEMITY: accessible discovery / product / checkout enhancements.
+   Scoped overrides keep the original luxury palette and checkout layout. */
+.search-panel{position:relative}
+.search-suggestions:not([hidden]){display:grid;gap:2px;position:absolute;left:clamp(20px,8vw,120px);right:clamp(20px,8vw,120px);top:calc(100% - 4px);max-height:min(56vh,470px);overflow-y:auto;background:var(--white);border:1px solid var(--line);box-shadow:0 18px 38px #18140e24;z-index:60;padding:10px}
+.search-result{width:100%;display:flex;align-items:center;gap:15px;background:transparent;border:0;text-align:start;padding:8px 10px;min-height:70px;color:var(--ink);cursor:pointer}
+.search-result:hover,.search-result:focus-visible,.search-result.selected{background:#f4efe7;outline-offset:-2px}
+.search-result img{width:52px;height:58px;object-fit:cover;background:#eee8dd;flex:none}
+.search-result span{display:grid;gap:4px;min-width:0;flex:1}
+.search-result strong{font:18px/1.2 var(--serif)}
+.search-result small{font:11px/1.4 var(--sans);color:var(--muted)}
+.search-result b{font:600 12px var(--sans);white-space:nowrap}
+.search-result mark{background:#f1dfae;color:inherit;border-radius:2px;padding:0 1px}
+.search-none{padding:20px;margin:0;text-align:center;color:var(--muted)}
+.product-discount{position:absolute;top:42px;inset-inline-start:12px;background:#6f4b33;color:#fff;padding:5px 8px;font-size:10px;font-weight:600;z-index:1}
+.product-availability{font:600 10px var(--sans);color:#477658;margin:0 0 8px}
+.product-availability.is-out{color:#a55b57}
+.product-meta{line-height:1.6;overflow-wrap:anywhere}
+.product-card.soldout .product-image{filter:saturate(.65)}
+.product-card .quick-add:disabled{background:#89837a;cursor:not-allowed}
+.cart-variant-label{display:grid;gap:4px;margin:7px 0;font:11px var(--sans);color:var(--muted)}
+.cart-variant-label select{max-width:100%;border:1px solid var(--line);background:#fff;padding:6px;color:var(--ink);font:12px var(--sans)}
+#dialogQuantity{display:block;width:82px;max-width:100%;padding:9px;border:1px solid var(--line);background:#fff;margin-bottom:14px}
+.checkout-lines{display:grid;gap:12px;margin:12px 0 20px;padding-bottom:17px;border-bottom:1px solid var(--line)}
+.order-summary-heading{font:24px/1.2 var(--serif);margin:12px 0 15px;color:var(--ink)}
+.checkout-line{display:grid;grid-template-columns:64px minmax(0,1fr) auto;gap:12px;align-items:start;text-align:start}
+.checkout-line img{height:82px;width:64px;object-fit:cover;background:#eee9e2}
+.checkout-line>div{min-width:0;display:grid;gap:5px}
+.checkout-line strong{font:17px/1.2 var(--serif)}
+.checkout-line small{font:11px/1.35 var(--sans);color:var(--muted)}
+.checkout-line>b{font:700 12px var(--sans);white-space:nowrap}
+.checkout-line-actions{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-top:5px}
+.checkout-line-actions button{border:1px solid var(--line);background:transparent;min-width:26px;min-height:27px;cursor:pointer;color:var(--ink)}
+.checkout-line-actions button:last-child{padding:2px 7px}
+.checkout-line-actions button:disabled{opacity:.4;cursor:not-allowed}
+.order-items>div span:first-child{display:grid;gap:4px}
+.order-items small{color:var(--muted);font-size:12px}
+.order-delivery{border-bottom:1px solid var(--line);padding-bottom:12px;line-height:1.7;overflow-wrap:anywhere}
+.payment-choice label[hidden]{display:none!important}
+@media(hover:none),(max-width:900px){.product-card .quick-add{transform:translateY(0)}.product-image-wrap{padding-bottom:42px}.product-image{height:calc(100% - 0px)}}
+@media(max-width:650px){.search-panel{top:0}.search-suggestions:not([hidden]){position:static;max-height:45vh;box-shadow:0 8px 20px #18140e15}.search-result{gap:10px}.search-result strong{font-size:16px}.search-result img{width:44px;height:51px}.search-result b{font-size:11px}.checkout-line{grid-template-columns:48px minmax(0,1fr);gap:9px}.checkout-line img{width:48px;height:62px}.checkout-line>b{grid-column:2}.checkout-line-actions{gap:6px}.order-summary-heading{font-size:22px}}
+
+.checkout-size-label{display:grid;gap:4px;font-size:11px;color:var(--muted)}
+.checkout-size-label select{max-width:100%;border:1px solid var(--line);padding:6px;font:12px var(--sans);background:#fff}
+.care-faq{margin:30px 0;max-width:770px}
+.care-faq h2{font:30px var(--serif);margin-bottom:17px}
+.care-faq details{border-bottom:1px solid var(--line);padding:13px 3px}
+.care-faq summary{cursor:pointer;font-weight:600;font-size:14px}
+.care-faq p{font-size:13px;line-height:1.75;color:var(--muted);padding:7px 0 0}
+
+.form-field[hidden]{display:none!important}
+
+/* Product detail: original price for the selected size (display only). */
+.dialog-price-row{display:flex;align-items:baseline;gap:12px;flex-wrap:wrap;margin:20px 0;font-family:var(--sans)}
+.dialog-current-price{font-size:16px;font-weight:700;color:var(--ink)}
+.dialog-old-price{font-size:13px;font-weight:400;color:#8e8a80;text-decoration:line-through;text-decoration-thickness:1px}

@@ -1,0 +1,79 @@
+/* Homepage hero: video is a true full-bleed background behind all hero text. */
+.page[data-page="home"] .hero {
+  position: relative !important;
+  display: block !important;
+  grid-template-columns: none !important;
+  isolation: isolate;
+  width: 100%;
+  min-height: min(790px, 82svh);
+  overflow: hidden;
+  background: #10100e;
+}
+.page[data-page="home"] .hero-background {
+  position: absolute !important;
+  inset: 0 !important;
+  width: 100% !important;
+  height: 100% !important;
+  z-index: 0 !important;
+  pointer-events: none;
+  overflow: hidden;
+}
+.page[data-page="home"] .hero-background video.hero-video {
+  position: absolute !important;
+  inset: 0 !important;
+  top: 0 !important;
+  left: 0 !important;
+  width: 100% !important;
+  height: 100% !important;
+  max-width: none !important;
+  aspect-ratio: auto !important;
+  object-fit: cover !important;
+  object-position: center center !important;
+  transform: none !important;
+  -webkit-mask-image: none !important;
+  mask-image: none !important;
+}
+.page[data-page="home"] .hero::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  background: linear-gradient(90deg, rgba(0,0,0,.76), rgba(0,0,0,.40) 60%, rgba(0,0,0,.17));
+  pointer-events: none;
+}
+html[dir="rtl"] .page[data-page="home"] .hero::before {
+  background: linear-gradient(270deg, rgba(0,0,0,.76), rgba(0,0,0,.40) 60%, rgba(0,0,0,.17));
+}
+.page[data-page="home"] .hero-copy,
+html[dir="rtl"] .page[data-page="home"] .hero-copy {
+  position: relative !important;
+  z-index: 2 !important;
+  box-sizing: border-box;
+  width: min(100%, 790px) !important;
+  min-height: min(790px, 82svh);
+  padding: clamp(70px, 8vw, 125px) clamp(26px, 7vw, 120px) !important;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: center;
+  background: transparent !important;
+}
+.page[data-page="home"] .hero-copy .eyebrow,
+.page[data-page="home"] .hero-copy h1,
+.page[data-page="home"] .hero-copy h1 em,
+.page[data-page="home"] .hero-copy .hero-description,
+.page[data-page="home"] .hero-copy .hero-note { color: #fff !important; }
+.page[data-page="home"] .hero-copy .button-dark { background: #fff; color: #151515; }
+@media(max-width:650px) {
+  .page[data-page="home"] .hero { min-height: 75svh; }
+  .page[data-page="home"] .hero-copy,
+  html[dir="rtl"] .page[data-page="home"] .hero-copy {
+    min-height: 75svh;
+    width: 100% !important;
+    padding: 55px 24px !important;
+  }
+  .page[data-page="home"] .hero::before,
+  html[dir="rtl"] .page[data-page="home"] .hero::before {
+    background: linear-gradient(180deg, rgba(0,0,0,.65), rgba(0,0,0,.47) 75%, rgba(0,0,0,.25));
+  }
+}

@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="robots" content="noindex, nofollow">
+  <title>Admin — Elzemity</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Cairo:wght@400;500;600;700&family=DM+Sans:wght@400;500;600;700&family=Playfair+Display:wght@400;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/styles.css"><link rel="stylesheet" href="css/admin.css"><link rel="stylesheet" href="css/pages.css">
+  <link rel="icon" type="image/png" href="img/elzemity-white.png">
+  <script src="js/i18n.js"></script>
+  <script defer src="js/strings-store.js"></script><script defer src="js/strings-admin.js"></script>
+  <script defer src="/socket.io/socket.io.js"></script><script defer src="js/admin.js"></script>
+  <link rel="stylesheet" href="css/elzemity-brand.css?v=2">
+</head>
+<body class="admin">
+  <div class="conn-banner" id="connBanner" role="status" hidden></div>
+  <header class="admin-bar"><a class="brand" href="/admin" aria-label="Elzemity — Admin"><img class="brand-logo" src="img/elzemity-white.png" alt="Elzemity" width="44" height="49" decoding="async"><span class="admin-tag">ADMIN</span></a><div class="admin-bar-right"><button id="langToggle" class="lang-toggle" type="button">العربية</button><span id="whoami"></span></div></header>
+  <main id="app" class="admin-main"><p>Loading…</p></main>
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+</body>
+</html>

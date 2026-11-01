@@ -1,0 +1,17 @@
+# /etc/systemd/system/oriantal-perfumes.service
+[Unit]
+Description=Oriantal Perfumes store
+After=network.target mysql.service
+[Service]
+Type=simple
+User=oriantal
+WorkingDirectory=/opt/oriantal-perfumes/backend
+Environment=NODE_ENV=production
+ExecStart=/usr/bin/node server/index.js
+Restart=always
+RestartSec=3
+NoNewPrivileges=true
+ProtectSystem=full
+PrivateTmp=true
+[Install]
+WantedBy=multi-user.target
