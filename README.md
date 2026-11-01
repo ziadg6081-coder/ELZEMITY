@@ -1,5 +1,4 @@
-# Oriantal Perfumes — متجر عطور إلكتروني
-
+# ELZEMITY — متجر عطور إلكتروني
 متجر كامل: **HTML/CSS/Vanilla JS** (واجهة) + **Node.js/Express** (API) + **MySQL** (قاعدة البيانات) + **Socket.IO** (تحديث لحظي).
 
 ## سياسة الدفع (ثابتة)
